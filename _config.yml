@@ -1,0 +1,19 @@
+name: ADB - Androids Developer Bakery
+description: Blogging about Android Development
+meta_description: "ADB - Androids Developer Bakery, Blogging about Android Development"
+
+markdown: kramdown
+highlighter: rouge
+logo: false
+paginate: 15
+baseurl: /
+domain_name: "https://benedictp.github.io"
+google_analytics: "UA-63875966-1"
+plugins: [jekyll-paginate]
+
+# Details for the RSS feed generator
+url: "https://benedictp.github.io"
+author: "Benedict Pregler"
+
+# Disqus config
+disqus-shortname: "tlathinklikeandroid"
