@@ -34,57 +34,13 @@ data class TimekeeperHolder(var timekeepers: Array<Timekeeper>)
 But now I want that both classes are parcelable. Without the Array in TimekeeperHolder it would be straight forward but with this array the CREATOR in Timekeeper must be visible to TimekeeperHolder.
 
 The Timekeeper:
-```kotlin
-data class Timekeeper(var name: String, var time: String) : Parcelable {
-    override fun describeContents() = 0
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeString(name)
-        dest.writeString(time)
-    }
-
-    companion object {
-        val CREATOR = object : Parcelable.Creator<Timekeeper> {
-
-            override fun createFromParcel(`in`: Parcel) =
-                Timekeeper(`in`.readString(), `in`.readString())
-
-            override fun newArray(size: Int): Array<Timekeeper?> =
-                arrayOfNulls(size)
-
-        }
-    }
-}
-```
+<script src="https://gist.github.com/BenedictP/c8dd22cd91d25daa5e11873ce79228de.js"></script>
 
 
 With the companion object it's possible to declare an object inside a class and the member inside can be called like: Timekeeper.CREATOR.
 	
 The TimekeeperHolder needs to write the array into a typedArray and when we want to create the object from the parcel we need to create the array from a typedArray:
 
-```kotlin
-data class TimekeeperHolder(var timekeepers: Array<Timekeeper>) : Parcelable {
-    override fun describeContents() = 0
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeTypedArray(timekeepers, flags)
-    }
-
-        companion object {
-
-            val CREATOR = object :
-                Parcelable.Creator<TimekeeperHolder> {
-
-            override fun createFromParcel(`in`: Parcel) 
-                = TimekeeperHolder(
-                    `in`.createTypedArray(Timekeeper.CREATOR)
-                     )
-
-            override fun newArray(size: Int): Array<TimekeeperHolder?> 
-                = arrayOfNulls(size)
-        }
-    }
-}
-```
+<script src="https://gist.github.com/BenedictP/436778dff10b4f42e9be71b7b1cef872.js"></script>
 	
 With the given constructor we can easily return the object in createFromParcel(\`in`: Parcel) and the createTypedArray method only needs the CREATOR from the Timekeeper object.
